@@ -75,6 +75,8 @@ do_deploy() {
 		DTS_NAME=`basename -s .dts ${DTS_FILE}`
 		install -d ${DEPLOY_DIR_IMAGE}
 		install -m 0644 ${B}/${DTS_NAME}.dtb ${DEPLOY_DIR_IMAGE}/${DTS_NAME}.dtb
+		[ ${MACHINE}.dtb == ${DTS_NAME}.dtb ] || \
+			ln -sf ${DTS_NAME}.dtb ${DEPLOY_DIR_IMAGE}/${MACHINE}.dtb
 		ln -sf ${DTS_NAME}.dtb ${DEPLOY_DIR_IMAGE}/system.dtb
 	done
 }
