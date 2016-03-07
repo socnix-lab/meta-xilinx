@@ -22,6 +22,8 @@ COMPATIBLE_MACHINE = "zynq"
 
 PROVIDES = "virtual/bootloader virtual/boot-bin"
 
+UBOOT_BINARY = "u-boot-dtb.img"
+
 # SPL binary boot.bin is in spl directory, no longer in the root
 SPL_BINARY = "boot.bin"
 UBOOT_MAKE_TARGET ?= "boot.bin"
@@ -29,7 +31,7 @@ UBOOT_MAKE_TARGET ?= "boot.bin"
 inherit zynq7-platform-paths
 
 # Addition images for jtag boot and sdboot
-EXTRA_UBOOT_IMGS ?= "u-boot-dtb.img u-boot-dtb.bin u-boot.bin spl/u-boot-spl.bin"
+EXTRA_UBOOT_IMGS ?= "u-boot-dtb.bin u-boot.bin spl/u-boot-spl.bin"
 
 do_configure_prepend() {
 	[ -e ${PLATFORM_INIT_STAGE_DIR}/ps7_init_gpl.h ] && \
