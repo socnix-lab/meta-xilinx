@@ -85,14 +85,35 @@
 		clock-output-names = "i2s_clk";
 	};
 
-	zybo_ssm2603_snd: zybo_ssm2603_snd {
-		compatible = "digilent,zybo-sound";
-		audio-codec = <&ssm2603>;
-		cpu-dai = <&axi_i2s_adi_0>;
+	sound {
+		compatible = "simple-audio-card";
+		simple-audio-card,name = "ZYBO-Sound-Card";
+		simple-audio-card,format = "i2s";
+		simple-audio-card,bitclock-master = <&dailink0_master>;
+		simple-audio-card,frame-master = <&dailink0_master>;
+		simple-audio-card,widgets =
+			"Microphone", "Microphone Jack",
+			"Headphone", "Headphone Jack",
+			"Line", "Line In Jack";
+		simple-audio-card,routing =
+			"MICIN", "Microphone Jack",
+			"Headphone Jack", "LHPOUT",
+			"Headphone Jack", "RHPOUT",
+			"LLINEIN", "Line In Jack",
+			"RLINEIN", "Line In Jack";
+		dailink0_master: simple-audio-card,cpu {
+			clocks = <&i2s_clk>;
+			sound-dai = <&axi_i2s_adi_0>;
+		};
+		simple-audio-card,codec {
+			clocks = <&i2s_clk>;
+			sound-dai = <&ssm2603>;
+		};
 	};
 };
 
 &axi_i2s_adi_0 {
+	#sound-dai-cells = <0>;
 	compatible = "adi,axi-i2s-1.00.a";
 	clocks = <&clkc 15>, <&i2s_clk>;
 	clock-names = "axi", "ref";
@@ -102,6 +123,7 @@
 
 &i2c0 {
 	ssm2603: ssm2603@1a{
+		#sound-dai-cells = <0>;
 		compatible = "adi,ssm2603";
 		reg = <0x1a>;
 	};
