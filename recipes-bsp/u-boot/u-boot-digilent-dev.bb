@@ -31,7 +31,7 @@ UBOOT_MAKE_TARGET ?= "boot.bin"
 inherit zynq7-platform-paths
 
 # Addition images for jtag boot and sdboot
-EXTRA_UBOOT_IMGS ?= "u-boot-dtb.bin u-boot.bin spl/u-boot-spl.bin"
+EXTRA_UBOOT_IMGS ?= "${UBOOT_BINARY} u-boot-dtb.bin u-boot.bin spl/u-boot-spl.bin"
 
 do_configure_prepend() {
 	[ -e ${PLATFORM_INIT_STAGE_DIR}/ps7_init_gpl.h ] && \
