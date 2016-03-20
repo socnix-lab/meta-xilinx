@@ -87,6 +87,9 @@ FATPAYLOAD ?= "${DEPLOY_DIR_IMAGE}/u-boot-dtb.img"
 
 BITSTREAM ?= "${DEPLOY_DIR_IMAGE}/download.bit"
 
+# Default bitstream file name on the SD card.
+BIT_FN ?= 'bitstream'
+
 IMAGEDATESTAMP = "${@time.strftime('%Y.%m.%d',time.gmtime())}"
 
 IMAGE_CMD_xilinx-sdimg () {
@@ -187,7 +190,7 @@ EOF
 	fi
 
 	if [ -f ${BITSTREAM} ]; then
-		mcopy -i ${WORKDIR}/boot.img -s -v ${BITSTREAM} :: || true
+		mcopy -i ${WORKDIR}/boot.img -s -v ${BITSTREAM} ::${BIT_FN} || true
 	fi
 
 	# Burn Partitions
