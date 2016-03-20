@@ -69,6 +69,7 @@ IMAGE_DEPENDS_xilinx-sdimg = " \
 			mtools-native \
 			dosfstools-native \
 			virtual/kernel \
+			device-tree \
 			${IMAGE_BOOTLOADER} \
 			"
 
@@ -86,6 +87,9 @@ SDIMG = "${DEPLOY_DIR_IMAGE}/${IMAGE_NAME}.rootfs.xilinx-sdimg"
 FATPAYLOAD ?= "${DEPLOY_DIR_IMAGE}/u-boot-dtb.img"
 
 BITSTREAM ?= "${DEPLOY_DIR_IMAGE}/download.bit"
+
+# Default bitstream file name on the SD card.
+BIT_FN ?= 'bitstream'
 
 IMAGEDATESTAMP = "${@time.strftime('%Y.%m.%d',time.gmtime())}"
 
@@ -157,7 +161,7 @@ IMAGE_CMD_xilinx-sdimg () {
 	fi
 
 	if [ -f ${BITSTREAM} ]; then
-		mcopy -i ${WORKDIR}/boot.img -s -v ${BITSTREAM} :: || true
+		mcopy -i ${WORKDIR}/boot.img -s -v ${BITSTREAM} ::${BIT_FN} || true
 	fi
 
 	# Burn Partitions
@@ -198,7 +202,7 @@ gen_sdroot_dtb() {
 	# look for dtb in ${DEPLOY_DIR_IMAGE} if default dtb found
 	target_dtb=${DEPLOY_DIR_IMAGE}/${MACHINE}.dtb
 	if [ ! -f ${target_dtb} ]; then
-		target_dtb=$(find ${DEPLOY_DIR_IMAGE} --maxdepth 0 -name "*.dtb" | tail -1)
+		target_dtb=$(find ${DEPLOY_DIR_IMAGE} -maxdepth 0 -name "*.dtb" | tail -1)
 		if [ ! -f ${target_dtb} ]; then
 			echo "Error: No dtb found!!!"
 			exit 255
