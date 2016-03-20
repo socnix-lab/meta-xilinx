@@ -1,6 +1,7 @@
 DESCRIPTION = "Startup script - disable console blank"
 SECTION = "base"
-LICENSE = "CLOSED"
+LICENSE = "MIT"
+LIC_FILES_CHKSUM = "file://${XILINXBASE}/COPYING.MIT;md5=838c366f69b72c5df05c96dff79b35f2"
 
 PR = "r0"
 
