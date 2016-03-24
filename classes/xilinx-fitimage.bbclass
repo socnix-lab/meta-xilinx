@@ -30,7 +30,6 @@ IMAGE_DEPENDS_xilinx-fitimage = " \
 			u-boot-mkimage-native \
 			dtc-native \
 			virtual/kernel \
-			${@bb.utils.contains('KERNEL_IMAGETYPE', 'uImage', '', '',d)} \
 			"
 
 # Final fitimage name

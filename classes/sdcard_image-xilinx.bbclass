@@ -70,7 +70,6 @@ IMAGE_DEPENDS_xilinx-sdimg = " \
 			dosfstools-native \
 			virtual/kernel \
 			${IMAGE_BOOTLOADER} \
-			${@bb.utils.contains('KERNEL_IMAGETYPE', 'uImage', '', '',d)} \
 			"
 
 # SD card image name
