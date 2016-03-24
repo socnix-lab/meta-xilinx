@@ -4,11 +4,11 @@ UBRANCH ?= "master"
 LIC_FILES_CHKSUM = "file://README;beginline=1;endline=6;md5=157ab8408beab40cd8ce1dc69f702a6c"
 UURI = "git://github.com/Digilent/u-boot-digilent.git;protocol=https"
 
-# digilent-v2016.03 tag : "7654648d5c8ccc66f036daaa7e41f149ac474983"
+# digilent-v2016.03 tag : "4dd0f06c46085cacc607dabbdf288bef6ad67115"
 # u-boot-digilent-dev : ${AUTOREV}
 SRCREV = '${@oe.utils.conditional( \
 	"PREFERRED_PROVIDER_virtual/bootloader","u-boot-digilent-dev", \
-	"${AUTOREV}", "7654648d5c8ccc66f036daaa7e41f149ac474983", d)}'
+	"${AUTOREV}", "4dd0f06c46085cacc607dabbdf288bef6ad67115", d)}'
 
 UBOOT_EXTENSION = '${@oe.utils.conditional( \
 	"PREFERRED_PROVIDER_virtual/bootloader","u-boot-digilent-dev", \
