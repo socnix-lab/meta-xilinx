@@ -68,6 +68,7 @@ IMAGE_DEPENDS_xilinx-sdimg = " \
 			parted-native \
 			mtools-native \
 			dosfstools-native \
+			device-tree \
 			virtual/kernel \
 			${IMAGE_BOOTLOADER} \
 			"
