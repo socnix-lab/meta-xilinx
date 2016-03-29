@@ -100,6 +100,28 @@ usage() {
 	exit 1
 }
 
+array_check()
+{
+	local a=999
+	local max_a=0
+	local max_i=0
+
+	if echo $1 | grep -q img; then
+		max_a=$MAX_IMG
+		max_i=13
+		let a=$(echo $1 | awk -F "img" '{print $2}')
+	elif echo $1 | grep -q conf; then
+		max_a=$MAX_CONF
+		max_i=9
+		let a=$(echo $1 | awk -F "conf" '{print $2}')
+	fi
+	if [ ${a} -lt 0 -o ${a} -gt ${max_a} -o \
+		${2} -lt 0 -o ${2} -gt ${max_i} ]; then
+		echo "WARNING: Invalid array name, skipping!!!"
+		return 255
+	fi
+}
+
 #
 # $1:	array name
 # $2:	index
@@ -108,6 +130,8 @@ usage() {
 #
 array_put()
 {
+	# check if array is declared
+	array_check $1 $2 || return 0
 	if [ -z "$4" ]; then
 		eval $1[$2]=$3
 	else
