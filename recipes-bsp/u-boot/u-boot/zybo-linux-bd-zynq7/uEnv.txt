@@ -1,0 +1,2 @@
+bootargs=console=ttyPS0,115200 earlyprintk root=/dev/mmcblk0p2 rw rootfstype=ext4 rootwait
+uenvcmd=echo Copying FIT from SD to RAM... && load mmc 0 ${load_addr} ${fit_image} && bootm ${load_addr}#conf@2

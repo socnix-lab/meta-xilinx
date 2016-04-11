@@ -3,6 +3,10 @@ include u-boot-spl-zynq-init.inc
 FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
 SRC_URI_append_picozed-zynq7 = " file://ARM-zynq-Configure-picozed-to-use-custom-init.patch"
 
+SRC_URI_append_zybo-linux-bd-zynq7 = " file://uEnv.txt"
+
+UBOOT_ENV_zybo-linux-bd-zynq7 = "uEnv"
+
 SRC_URI_append = " file://zynq-Add-fpga-support-to-u-boot-SPL.patch \
 		file://configs-zynq-common-Add-uEnv.txt-support.patch \
 "
