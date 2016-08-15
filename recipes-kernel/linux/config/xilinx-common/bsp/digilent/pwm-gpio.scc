@@ -1,0 +1,4 @@
+define KFEATURE_DESCRIPTION "Enable PWM GPIO support"
+define KFEATURE_COMPATIBILITY board
+
+kconfig hardware pwm-gpio.cfg

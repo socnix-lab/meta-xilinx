@@ -1,0 +1,4 @@
+define KFEATURE_DESCRIPTION "USB ULPI PHY support"
+define KFEATURE_COMPATIBILITY board
+
+kconfig hardware usb-ulpi-phy.cfg
