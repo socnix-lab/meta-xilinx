@@ -13,22 +13,40 @@ DEPENDS += "dtc-native"
 FILES_${PN} = "/boot/devicetree*"
 DEVICETREE_FLAGS ?= "-R 8 -p 0x3000"
 
+KERNEL_DTS_INCLUDE_zynq = "${STAGING_KERNEL_DIR}/arch/arm/boot/dts ${STAGING_KERNEL_DIR}/arch/arm/boot/dts/include ${STAGING_KERNEL_DIR}/include"
+KERNEL_DTS_INCLUDE_zynqmp = "${STAGING_KERNEL_DIR}/arch/arm/boot/dts ${STAGING_KERNEL_DIR}/arch/arm64/boot/dts/xilinx"
+
 S = "${WORKDIR}"
 
-do_compile() {
-	if test -n "${MACHINE_DEVICETREE}"; then
-		mkdir -p ${WORKDIR}/devicetree
-		for i in ${MACHINE_DEVICETREE}; do
-			if test -e ${WORKDIR}/$i; then
-				echo cp ${WORKDIR}/$i ${WORKDIR}/devicetree
-				cp ${WORKDIR}/$i ${WORKDIR}/devicetree
-			fi
-		done
-	fi
+python () {
+    # auto add dependency on kernel tree
+    if d.getVar("KERNEL_DTS_INCLUDE", True) != "":
+        d.setVarFlag("do_compile", "depends",
+            " ".join([d.getVarFlag("do_compile", "depends", True) or "", "virtual/kernel:do_shared_workdir"]))
+}
 
+do_compile() {
 	for DTS_FILE in ${DEVICETREE}; do
+		if test -n "${MACHINE_DEVICETREE}"; then
+			mkdir -p ${WORKDIR}/devicetree
+			for i in ${MACHINE_DEVICETREE}; do
+				if test -e ${WORKDIR}/$i; then
+					echo cp ${WORKDIR}/$i ${WORKDIR}/devicetree
+					cp ${WORKDIR}/$i ${WORKDIR}/devicetree
+				fi
+			done
+		fi
+
 		DTS_NAME=`basename ${DTS_FILE} | awk -F "." '{print $1}'`
-		dtc -I dts -O dtb ${DEVICETREE_FLAGS} -o ${DTS_NAME}.dtb ${DTS_FILE}
+		for d in ${KERNEL_DTS_INCLUDE}; do
+			dtc_include="${dtc_include} -i $d"
+			cpp_include="${cpp_include} -I${d}"
+		done
+		${BUILD_CPP} -E -nostdinc -Ulinux -I${WORKDIR}/devicetree \
+			${cpp_include} -x assembler-with-cpp \
+			-o ${DTS_FILE}.pp ${DTS_FILE}
+		dtc -I dts -O dtb ${DEVICETREE_FLAGS} -i ${WORKDIR}/devicetree \
+			${dtc_include} -o ${DTS_NAME}.dtb ${DTS_FILE}.pp
 	done
 }
 
